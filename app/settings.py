@@ -16,7 +16,8 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 # Токен OPENAI (chatGPT)
 OPENAI_TOKEN = os.getenv('OPENAI_TOKEN')
-SYSTEM_CONTEXT = 'Перескажи вкратце содержание переписки между пользователями, с упоминанием имён этих пользователей'
+SYSTEM_CONTEXT = ('Перескажи вкратце содержание переписки между '
+                  'пользователями, с упоминанием имён этих пользователей')
 
 # Покдлючение к БД SQLite
 connect = sqlite3.connect('messages.db')

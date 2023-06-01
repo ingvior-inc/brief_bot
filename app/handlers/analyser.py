@@ -57,7 +57,7 @@ async def request_to_ai(text_to_proccess: str) -> str:
                                                 {'role': 'user',
                                                  'content': text_to_proccess}
                                             ],
-                                            temperature=0.5)
+                                            temperature=0.7)
 
     if 'choices' in response:
         choices = response['choices']
