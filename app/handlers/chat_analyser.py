@@ -19,7 +19,7 @@ async def chat_analyser(message: types.Message) -> None:
             logging.warning(f'{message.chat.title}({message.chat.id}) '
                             f'- успешно вызвана команда /start')
 
-            cur.execute(f'SELECT message_id, username, message '
+            cur.execute(f'SELECT message_id, username, message_text '
                         f'FROM messages '
                         f'WHERE chat_id = {message.chat.id} '
                         f'ORDER BY id DESC '

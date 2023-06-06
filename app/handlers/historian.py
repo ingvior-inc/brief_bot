@@ -11,10 +11,10 @@ async def historian(message: types.Message) -> None:
     """
     cur.execute('CREATE TABLE IF NOT EXISTS messages '
                 '(id INTEGER PRIMARY KEY AUTOINCREMENT,'
-                'chat_id INTEGER,'
+                'chat_id INTEGER NOT NULL,'
                 'message_id INTEGER NOT NULL,'
                 'username TEXT NOT NULL,'
-                'message TEXT)')
+                'message_text TEXT)')
 
     await check_db_limit(chat_id=message.chat.id)
 
@@ -30,7 +30,8 @@ async def historian(message: types.Message) -> None:
                              f'({message.from_user.username})')
 
     cur.execute(f"INSERT INTO messages(chat_id, message_id, username, "
-                f"message) VALUES ({message.chat.id}, {message.message_id}, "
+                f"message_text) VALUES ({message.chat.id}, "
+                f"{message.message_id}, "
                 f"'{user_profile_name}', '{message.text}')")
     connect.commit()
 
