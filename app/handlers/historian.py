@@ -1,5 +1,3 @@
-import logging
-
 from aiogram import types, Dispatcher
 
 from app.general_functions import only_from_groups
@@ -12,8 +10,9 @@ async def historian(message: types.Message) -> None:
     Функция записывает все сообщения из групп Telegram в базу данных.
     """
     cur.execute('CREATE TABLE IF NOT EXISTS messages '
-                '(id INTEGER PRIMARY KEY AUTOINCREMENT, '
-                'chat_id INTEGER NOT NULL,'
+                '(id INTEGER PRIMARY KEY AUTOINCREMENT,'
+                'chat_id INTEGER,'
+                'message_id INTEGER NOT NULL,'
                 'username TEXT NOT NULL,'
                 'message TEXT)')
 
@@ -22,16 +21,17 @@ async def historian(message: types.Message) -> None:
     try:
         user_profile_name = (f'{message.from_user.first_name} '
                              f'({message.from_user.username}) в ответ на '
-                             f'сообщение от '
+                             f'сообщение (message_id '
+                             f'{message.reply_to_message.message_id}) от '
                              f'{message.reply_to_message.from_user.first_name} '
                              f'({message.reply_to_message.from_user.username})')
     except Exception:
         user_profile_name = (f'{message.from_user.first_name} '
                              f'({message.from_user.username})')
 
-    cur.execute(f"INSERT INTO messages(chat_id, username, message) VALUES "
-                f"({message.chat.id}, '{user_profile_name}', "
-                f"'{message.text}')")
+    cur.execute(f"INSERT INTO messages(chat_id, message_id, username, "
+                f"message) VALUES ({message.chat.id}, {message.message_id}, "
+                f"'{user_profile_name}', '{message.text}')")
     connect.commit()
 
 
