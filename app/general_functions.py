@@ -1,6 +1,6 @@
 import logging
-import openai
 
+import openai
 from aiogram import types
 
 
