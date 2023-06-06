@@ -2,8 +2,7 @@ from aiogram import Dispatcher
 from aiogram.types import BotCommand
 
 commands = {
-    'start': 'Проанализировать последние N сообщений в группе. '
-             'Например, /start 30',
+    'start': 'Проанализировать последние N сообщений в группе'
 }
 
 

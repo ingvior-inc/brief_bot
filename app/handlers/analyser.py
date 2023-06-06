@@ -4,7 +4,8 @@ import openai
 from aiogram import types, Dispatcher
 
 from app.general_functions import only_from_groups
-from app.settings import cur, MESSAGES_LIMIT, SYSTEM_CONTEXT
+from app.settings import (cur, SYSTEM_CONTEXT, MESSAGES_LIMIT,
+                          INCORRECT_VALUE_MESSAGE)
 
 
 @only_from_groups
@@ -37,15 +38,13 @@ async def analyser(message: types.Message) -> None:
             logging.error(f'{message.chat.title}({message.chat.id}) '
                           f'- Попытка превысить лимит')
             await message.bot.send_message(chat_id=message.chat.id,
-                                           text=f'После /start укажите '
-                                                f'число от 10 до '
-                                                f'{MESSAGES_LIMIT}')
+                                           text=INCORRECT_VALUE_MESSAGE)
 
     except ValueError:
         logging.error(f'{message.chat.title}({message.chat.id}) '
                       f'- Некорректный вызов команды /start')
         await message.bot.send_message(chat_id=message.chat.id,
-                                       text='После /start должно идти число')
+                                       text=INCORRECT_VALUE_MESSAGE)
 
 
 async def request_to_ai(text_to_proccess: str) -> str:
@@ -57,7 +56,7 @@ async def request_to_ai(text_to_proccess: str) -> str:
                                                 {'role': 'user',
                                                  'content': text_to_proccess}
                                             ],
-                                            temperature=0.7)
+                                            temperature=0.8)
 
     if 'choices' in response:
         choices = response['choices']

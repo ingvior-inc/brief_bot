@@ -24,4 +24,9 @@ connect = sqlite3.connect('messages.db')
 cur = connect.cursor()
 
 # Лимит на количество сообщений с одного чата для анализа / записи в БД
-MESSAGES_LIMIT = 150
+MESSAGES_LIMIT = 300
+
+INCORRECT_VALUE_MESSAGE = (f'После /start укажите число N '
+                           f'(от 10 до {MESSAGES_LIMIT}) , где N - '
+                           f'количество последних сообщений в группе, '
+                           f'содержание которых нужно кратко пересказать')

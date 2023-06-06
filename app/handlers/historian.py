@@ -19,8 +19,15 @@ async def historian(message: types.Message) -> None:
 
     await check_db_limit(chat_id=message.chat.id)
 
-    user_profile_name = (f'{message.from_user.first_name} '
-                         f'({message.from_user.username})')
+    try:
+        user_profile_name = (f'{message.from_user.first_name} '
+                             f'({message.from_user.username}) в ответ на '
+                             f'сообщение от '
+                             f'{message.reply_to_message.from_user.first_name} '
+                             f'({message.reply_to_message.from_user.username})')
+    except Exception:
+        user_profile_name = (f'{message.from_user.first_name} '
+                             f'({message.from_user.username})')
 
     cur.execute(f"INSERT INTO messages(chat_id, username, message) VALUES "
                 f"({message.chat.id}, '{user_profile_name}', "
