@@ -13,9 +13,8 @@ async def chat_analyser(message: types.Message) -> None:
         count_messages = int(message.get_args())
 
         if MESSAGES_LIMIT >= count_messages >= 10:
-            await message.bot.send_message(chat_id=message.chat.id,
-                                           text='Читаю ваши буквы, '
-                                                'подождите несколько секунд')
+            await message.reply(text='Читаю ваши буквы, '
+                                     'подождите несколько секунд')
             logging.warning(f'{message.chat.title}({message.chat.id}) '
                             f'- успешно вызвана команда /start')
 
