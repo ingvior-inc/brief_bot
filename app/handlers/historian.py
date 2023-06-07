@@ -5,7 +5,7 @@ from app.settings import connect, cur, MESSAGES_LIMIT
 
 
 @only_from_groups
-async def historian(message: types.Message) -> None:
+async def chat_historian(message: types.Message) -> None:
     """
     Функция записывает все сообщения из групп Telegram в базу данных.
     """
@@ -17,6 +17,20 @@ async def historian(message: types.Message) -> None:
                 'message_text TEXT)')
 
     await check_db_limit(chat_id=message.chat.id)
+
+    if message.from_user.is_bot:
+        user_profile_name = (f'Bot в ответ на '
+                             f'команду пользователя (message_id '
+                             f'{message.reply_to_message.message_id}) от '
+                             f'{message.reply_to_message.from_user.first_name} '
+                             f'({message.reply_to_message.from_user.username})')
+        cur.execute(f"INSERT INTO messages(chat_id, message_id, username, "
+                    f"message_text) VALUES ({message.chat.id}, "
+                    f"{message.message_id}, "
+                    f"'{user_profile_name}', '{message.text}')")
+        connect.commit()
+        return
+
 
     try:
         user_profile_name = (f'{message.from_user.first_name} '
@@ -34,6 +48,7 @@ async def historian(message: types.Message) -> None:
                 f"{message.message_id}, "
                 f"'{user_profile_name}', '{message.text}')")
     connect.commit()
+    return
 
 
 async def check_db_limit(chat_id: int) -> None:
@@ -59,4 +74,5 @@ async def setup(dp: Dispatcher):
     """
     Registering handlers in Dispatcher.
     """
-    dp.register_message_handler(historian)
+    dp.register_message_handler(chat_historian)
+
