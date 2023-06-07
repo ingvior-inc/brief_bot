@@ -24,24 +24,18 @@ async def chat_historian(message: types.Message) -> None:
                              f'{message.reply_to_message.message_id}) от '
                              f'{message.reply_to_message.from_user.first_name} '
                              f'({message.reply_to_message.from_user.username})')
-        cur.execute(f"INSERT INTO messages(chat_id, message_id, username, "
-                    f"message_text) VALUES ({message.chat.id}, "
-                    f"{message.message_id}, "
-                    f"'{user_profile_name}', '{message.text}')")
-        connect.commit()
-        return
 
-
-    try:
-        user_profile_name = (f'{message.from_user.first_name} '
-                             f'({message.from_user.username}) в ответ на '
-                             f'сообщение (message_id '
-                             f'{message.reply_to_message.message_id}) от '
-                             f'{message.reply_to_message.from_user.first_name} '
-                             f'({message.reply_to_message.from_user.username})')
-    except Exception:
-        user_profile_name = (f'{message.from_user.first_name} '
-                             f'({message.from_user.username})')
+    else:
+        try:
+            user_profile_name = (f'{message.from_user.first_name} '
+                                 f'({message.from_user.username}) в ответ на '
+                                 f'сообщение (message_id '
+                                 f'{message.reply_to_message.message_id}) от '
+                                 f'{message.reply_to_message.from_user.first_name} '
+                                 f'({message.reply_to_message.from_user.username})')
+        except Exception:
+            user_profile_name = (f'{message.from_user.first_name} '
+                                 f'({message.from_user.username})')
 
     cur.execute(f"INSERT INTO messages(chat_id, message_id, username, "
                 f"message_text) VALUES ({message.chat.id}, "
@@ -68,6 +62,7 @@ async def check_db_limit(chat_id: int) -> None:
                     f'               ORDER BY id DESC'
                     f'               LIMIT {MESSAGES_LIMIT})')
         connect.commit()
+    return
 
 
 async def setup(dp: Dispatcher):
@@ -75,4 +70,3 @@ async def setup(dp: Dispatcher):
     Registering handlers in Dispatcher.
     """
     dp.register_message_handler(chat_historian)
-
