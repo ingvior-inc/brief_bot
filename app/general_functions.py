@@ -21,6 +21,7 @@ async def request_to_ai(system_context: str, text_to_proccess: str) -> str:
     Отправляет запрос в OpenAI с указанием системного контекста (роль GPT в
     обработке текста + сам текст).
     """
+    print(text_to_proccess)
     try:
         response = openai.ChatCompletion.create(model='gpt-3.5-turbo',
                                                 messages=[

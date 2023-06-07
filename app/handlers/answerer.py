@@ -8,7 +8,9 @@ from app.settings import ANSWERER_SYSTEM_CONTEXT
 async def answerer(message: types.Message) -> None:
     if message.get_args():
         proccessed_text = await request_to_ai(ANSWERER_SYSTEM_CONTEXT,
-                                              message.get_args())
+                                              (f'{message.from_user.first_name} '
+                                               f'({message.from_user.username}): '
+                                               f'{message.get_args()}'))
         await message.reply(text=proccessed_text)
         return
 
