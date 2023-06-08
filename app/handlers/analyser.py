@@ -32,7 +32,7 @@ async def chat_analyser(message: types.Message) -> None:
             try:
                 proccessed_text = await request_to_ai(ANALYSER_SYSTEM_CONTEXT,
                                                       text_to_proccess)
-            except openai.error.RateLimitError:
+            except openai.error.InvalidRequestError:
                 proccessed_text = ('Слишком много анализировать :( '
                                    'Давай поменьше')
 
