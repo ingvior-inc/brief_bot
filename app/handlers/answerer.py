@@ -17,9 +17,7 @@ async def answerer(message: types.Message) -> None:
 
         await historian.chat_historian(message)
 
-        response_text = await message.reply(text=proccessed_text)
-
-        await historian.chat_historian(response_text)
+        await message.reply(text=proccessed_text)
         return
 
     await message.reply(text='После /ask нужно что-то '

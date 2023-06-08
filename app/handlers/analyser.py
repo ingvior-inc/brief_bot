@@ -1,5 +1,6 @@
 import logging
 
+import openai.error
 from aiogram import types, Dispatcher
 
 from app.general_functions import only_from_groups, request_to_ai
@@ -28,8 +29,12 @@ async def chat_analyser(message: types.Message) -> None:
                                           f'{item[2]}'
                                 for item in reversed(cur.fetchall())))
 
-            proccessed_text = await request_to_ai(ANALYSER_SYSTEM_CONTEXT,
-                                                  text_to_proccess)
+            try:
+                proccessed_text = await request_to_ai(ANALYSER_SYSTEM_CONTEXT,
+                                                      text_to_proccess)
+            except openai.error.RateLimitError:
+                proccessed_text = ('Слишком много анализировать :( '
+                                   'Давай поменьше')
 
             await message.bot.send_message(chat_id=message.chat.id,
                                            text=proccessed_text)

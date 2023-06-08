@@ -18,24 +18,16 @@ async def chat_historian(message: types.Message) -> None:
 
     await check_db_limit(chat_id=message.chat.id)
 
-    if message.from_user.is_bot:
-        user_profile_name = (f'Bot в ответ на '
-                             f'команду пользователя (message_id '
+    try:
+        user_profile_name = (f'{message.from_user.first_name} '
+                             f'({message.from_user.username}) в ответ на '
+                             f'сообщение (message_id '
                              f'{message.reply_to_message.message_id}) от '
                              f'{message.reply_to_message.from_user.first_name} '
                              f'({message.reply_to_message.from_user.username})')
-
-    else:
-        try:
-            user_profile_name = (f'{message.from_user.first_name} '
-                                 f'({message.from_user.username}) в ответ на '
-                                 f'сообщение (message_id '
-                                 f'{message.reply_to_message.message_id}) от '
-                                 f'{message.reply_to_message.from_user.first_name} '
-                                 f'({message.reply_to_message.from_user.username})')
-        except Exception:
-            user_profile_name = (f'{message.from_user.first_name} '
-                                 f'({message.from_user.username})')
+    except Exception:
+        user_profile_name = (f'{message.from_user.first_name} '
+                             f'({message.from_user.username})')
 
     cur.execute(f"INSERT INTO messages(chat_id, message_id, username, "
                 f"message_text) VALUES ({message.chat.id}, "
