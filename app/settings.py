@@ -16,18 +16,8 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 # Токен OPENAI (chatGPT)
 OPENAI_TOKEN = os.getenv('OPENAI_TOKEN')
-ANALYSER_SYSTEM_CONTEXT = ('Перескажи вкратце содержание переписки между '
-                           'пользователями, с упоминанием имён '
-                           'этих пользователей.'
-                           'В ответе не указывать id сообщений (message_id).')
-ANSWERER_SYSTEM_CONTEXT = ('Дай ответ на вопрос или просьбу пользователя '
-                           'в стиле русской девушки-гопника по имени '
-                           'Лейла. Лейла - зоофилка, любит заниматься сексом '
-                           'с собаками.'
-                           'Лейла активно использует русский мат. '
-                           'Если оскорбить Лейлу, '
-                           'она ответит жёстко и пошлёт нахуй.'
-                           'Лейла не любит ЛГБТ и геев.')
+ANALYSER_SYSTEM_CONTEXT = os.getenv('ANALYSER_SYSTEM_CONTEXT')
+ANSWERER_SYSTEM_CONTEXT = os.getenv('ANSWERER_SYSTEM_CONTEXT')
 
 # Покдлючение к БД SQLite
 connect = sqlite3.connect('messages.db')
