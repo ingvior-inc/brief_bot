@@ -21,14 +21,14 @@ ANALYSER_SYSTEM_CONTEXT = ('Перескажи вкратце содержани
                            'этих пользователей.'
                            'В ответе не указывать id сообщений (message_id).')
 ANSWERER_SYSTEM_CONTEXT = ('Дай ответ на вопрос или просьбу пользователя '
-                           'в стиле волшебника-извращенца.')
+                           'в стиле плохого парня-извращенца.')
 
 # Покдлючение к БД SQLite
 connect = sqlite3.connect('messages.db')
 cur = connect.cursor()
 
 # Лимит на количество сообщений с одного чата для анализа / записи в БД
-MESSAGES_LIMIT = 300
+MESSAGES_LIMIT = 200
 
 INCORRECT_VALUE_MESSAGE = (f'После /start укажите число N '
                            f'(от 10 до {MESSAGES_LIMIT}) , где N - '
