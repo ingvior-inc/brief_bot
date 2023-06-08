@@ -29,12 +29,8 @@ async def chat_analyser(message: types.Message) -> None:
                                           f'{item[2]}'
                                 for item in reversed(cur.fetchall())))
 
-            try:
-                proccessed_text = await request_to_ai(ANALYSER_SYSTEM_CONTEXT,
-                                                      text_to_proccess)
-            except openai.error.InvalidRequestError:
-                proccessed_text = ('Слишком много анализировать :( '
-                                   'Давай поменьше')
+            proccessed_text = await request_to_ai(ANALYSER_SYSTEM_CONTEXT,
+                                                  text_to_proccess)
 
             await message.bot.send_message(chat_id=message.chat.id,
                                            text=proccessed_text)

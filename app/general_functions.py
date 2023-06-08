@@ -40,7 +40,14 @@ async def request_to_ai(system_context: str, text_to_proccess: str) -> str:
                 return ai_response_text
 
         logging.error(response)
-        return 'Что-то не так с AI :('
+        return 'Что-то не так с парсингом ответа OpenAI :('
 
     except openai.error.RateLimitError:
         return 'Перегружен запросами. Обратитесь позже please'
+
+    except openai.error.InvalidRequestError:
+        return 'Слишком много анализировать :( Давай поменьше'
+
+    except Exception as E:
+        logging.error(E)
+        return 'Что-то не так с серверами OpenAI :('
