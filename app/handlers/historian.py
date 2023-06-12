@@ -63,6 +63,14 @@ async def bot_historian(message: types.Message) -> None:
     return
 
 
+async def bot_history_clear(message: types.Message) -> None:
+    cur.execute(f'DELETE FROM bot_messages '
+                f'WHERE chat_id = {message.chat.id}')
+    connect.commit()
+    await message.reply('Память очищена')
+    return
+
+
 async def check_db_limit(chat_id: int, is_bot_history: bool = False) -> None:
     """
     Проверяет, достигло ли число записей в конкретном чате Telegram
@@ -102,4 +110,5 @@ async def setup(dp: Dispatcher):
     """
     Registering handlers in Dispatcher.
     """
+    dp.register_message_handler(bot_history_clear, commands='ask_clear')
     dp.register_message_handler(chat_historian)
