@@ -16,21 +16,28 @@ def only_from_groups(func):
     return wrapper
 
 
-async def request_to_ai(system_context: str, text_to_proccess: str) -> str:
+async def request_to_ai(system_context: str, text_to_proccess: str,
+                        memory: list = None) -> str:
     """
     Отправляет запрос в OpenAI с указанием системного контекста (роль GPT в
     обработке текста + сам текст).
     """
+
+    if memory is None:
+        memory = []
+
+    messages = [
+        {'role': 'system',
+         'content': system_context}
+                ]
+    for i in memory:
+        messages.append(i)
+
+    messages.append({'role': 'user', 'content': text_to_proccess})
+
     try:
         response = openai.ChatCompletion.create(model='gpt-3.5-turbo',
-                                                messages=[
-                                                    {'role': 'system',
-                                                     'content':
-                                                         system_context},
-                                                    {'role': 'user',
-                                                     'content':
-                                                         text_to_proccess}
-                                                ],
+                                                messages=messages,
                                                 temperature=0.9)
 
         if 'choices' in response:
