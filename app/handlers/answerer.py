@@ -8,6 +8,9 @@ from . import historian
 @only_from_groups
 async def answerer(message: types.Message) -> None:
     if message.get_args():
+
+        await historian.bot_historian(message)
+
         cur.execute(f'SELECT username, message_text '
                     f'FROM bot_messages '
                     f'WHERE chat_id = {message.chat.id} '
@@ -26,12 +29,9 @@ async def answerer(message: types.Message) -> None:
                                               text_to_process,
                                               memory)
 
-        await historian.bot_historian(message)
-
         bot_response = await message.reply(text=proccessed_text)
 
         await historian.bot_historian(bot_response)
-
         return
 
     await message.reply(text='После /ask нужно что-то '
