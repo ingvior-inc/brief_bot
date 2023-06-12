@@ -63,6 +63,7 @@ async def bot_historian(message: types.Message) -> None:
     return
 
 
+@only_from_groups
 async def bot_history_clear(message: types.Message) -> None:
     cur.execute(f'DELETE FROM bot_messages '
                 f'WHERE chat_id = {message.chat.id}')
