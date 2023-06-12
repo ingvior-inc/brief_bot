@@ -27,7 +27,7 @@ cur = connect.cursor()
 MESSAGES_LIMIT = 200
 
 # Лимит на количество сообщений в памяти бота
-BOT_MESSAGES_LIMIT = 6
+BOT_MESSAGES_LIMIT = 4
 
 INCORRECT_VALUE_MESSAGE = (f'После /start укажите число N '
                            f'(от 10 до {MESSAGES_LIMIT}) , где N - '
