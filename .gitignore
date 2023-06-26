@@ -131,3 +131,6 @@ dmypy.json
 
 # Local database
 messages.db
+
+# OpenAI system context
+context.json
