@@ -3,6 +3,8 @@ import logging
 import openai
 from aiogram import types
 
+from app.settings import OPENAI_MODEL
+
 
 def only_from_groups(func):
     """
@@ -22,7 +24,6 @@ async def request_to_ai(system_context: str, text_to_proccess: str,
     Отправляет запрос в OpenAI с указанием системного контекста (роль GPT в
     обработке текста + сам текст).
     """
-
     if memory is None:
         memory = []
 
@@ -36,7 +37,7 @@ async def request_to_ai(system_context: str, text_to_proccess: str,
     messages.append({'role': 'user', 'content': text_to_proccess})
 
     try:
-        response = openai.ChatCompletion.create(model='gpt-3.5-turbo',
+        response = openai.ChatCompletion.create(model=OPENAI_MODEL,
                                                 messages=messages,
                                                 temperature=0.9)
 
@@ -47,14 +48,19 @@ async def request_to_ai(system_context: str, text_to_proccess: str,
                 return ai_response_text
 
         logging.error(response)
-        return 'Что-то не так с парсингом ответа OpenAI :('
+        return ('Что-то не так с парсингом ответа OpenAI :(\n'
+                'Обратитесь к дебичу, который это кодил')
 
     except openai.error.RateLimitError:
-        return 'Перегружен запросами. Обратитесь позже please'
+        return ('Перегружен запросами.\n'
+                'Попробуйте ещё раз позже')
 
     except openai.error.InvalidRequestError:
-        return 'Слишком много анализировать :( Давай поменьше'
+        return ('Что-то не так со структурой запроса в OpenAI '
+                '(некорректные параметры, слишком объёмные данные и т.д.).\n'
+                'Обратитесь к дебичу, который это кодил')
 
     except Exception as E:
         logging.error(E)
-        return 'Что-то не так с серверами OpenAI :('
+        return ('Что-то не так с серверами OpenAI :(\n'
+                'Попробуйте ещё раз позже')

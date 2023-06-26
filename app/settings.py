@@ -14,13 +14,15 @@ logging.basicConfig(level=logging.INFO,
 # Токен бота Telegram
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 
-# Токен OPENAI (chatGPT)
+# Токен OpenAI
 OPENAI_TOKEN = os.getenv('OPENAI_TOKEN')
+# Модель OpenAI
+OPENAI_MODEL = 'gpt-3.5-turbo-16k-0613'
 ANALYSER_SYSTEM_CONTEXT = os.getenv('ANALYSER_SYSTEM_CONTEXT')
 ANSWERER_SYSTEM_CONTEXT = os.getenv('ANSWERER_SYSTEM_CONTEXT')
 
-# Покдлючение к БД SQLite
-connect = sqlite3.connect('messages.db')
+# Создание / покдлючение БД SQLite
+connect = sqlite3.connect('./messages.db')
 cur = connect.cursor()
 
 # Лимит на количество сообщений с одного чата для анализа / записи в БД
@@ -28,8 +30,3 @@ MESSAGES_LIMIT = 200
 
 # Лимит на количество сообщений в памяти бота
 BOT_MESSAGES_LIMIT = 4
-
-INCORRECT_VALUE_MESSAGE = (f'После /start укажите число N '
-                           f'(от 10 до {MESSAGES_LIMIT}) , где N - '
-                           f'количество последних сообщений в группе, '
-                           f'содержание которых нужно кратко пересказать')

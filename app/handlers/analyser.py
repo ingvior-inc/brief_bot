@@ -1,15 +1,17 @@
 import logging
 
-import openai.error
 from aiogram import types, Dispatcher
 
 from app.general_functions import only_from_groups, request_to_ai
-from app.settings import (cur, ANALYSER_SYSTEM_CONTEXT, MESSAGES_LIMIT,
-                          INCORRECT_VALUE_MESSAGE)
+from app.settings import (cur, ANALYSER_SYSTEM_CONTEXT, MESSAGES_LIMIT)
 
 
 @only_from_groups
 async def chat_analyser(message: types.Message) -> None:
+    incorrect_value_message = (f'После /start укажите число N '
+                               f'(от 10 до {MESSAGES_LIMIT}) , где N - '
+                               f'количество последних сообщений в группе, '
+                               f'содержание которых нужно кратко пересказать')
     try:
         count_messages = int(message.get_args())
 
@@ -39,14 +41,14 @@ async def chat_analyser(message: types.Message) -> None:
         logging.error(f'{message.chat.title}({message.chat.id}) '
                       f'- Попытка превысить лимит')
         await message.bot.send_message(chat_id=message.chat.id,
-                                       text=INCORRECT_VALUE_MESSAGE)
+                                       text=incorrect_value_message)
         return
 
     except ValueError:
         logging.error(f'{message.chat.title}({message.chat.id}) '
                       f'- Некорректный вызов команды /start')
         await message.bot.send_message(chat_id=message.chat.id,
-                                       text=INCORRECT_VALUE_MESSAGE)
+                                       text=incorrect_value_message)
         return
 
 
