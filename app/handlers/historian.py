@@ -9,13 +9,6 @@ async def chat_historian(message: types.Message) -> None:
     """
     Функция записывает все сообщения из групп Telegram в базу данных.
     """
-    cur.execute('CREATE TABLE IF NOT EXISTS messages '
-                '(id INTEGER PRIMARY KEY AUTOINCREMENT,'
-                'chat_id INTEGER NOT NULL,'
-                'message_id INTEGER NOT NULL,'
-                'username TEXT NOT NULL,'
-                'message_text TEXT)')
-
     await check_db_limit(chat_id=message.chat.id)
 
     try:
@@ -43,12 +36,6 @@ async def bot_historian(message: types.Message) -> None:
     """
     Функция записывает диалоги с ботом из групп Telegram в базу данных.
     """
-    cur.execute('CREATE TABLE IF NOT EXISTS bot_messages '
-                '(id INTEGER PRIMARY KEY AUTOINCREMENT,'
-                'chat_id INTEGER NOT NULL,'
-                'username TEXT NOT NULL,'
-                'message_text TEXT)')
-
     await check_db_limit(chat_id=message.chat.id, is_bot_history=True)
 
     user_profile_name = (f'{message.from_user.first_name} '
