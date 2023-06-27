@@ -29,10 +29,11 @@ async def chat_historian(message: types.Message) -> None:
         user_profile_name = (f'{message.from_user.first_name} '
                              f'({message.from_user.username})')
 
-    cur.execute(f"INSERT INTO messages(chat_id, message_id, username, "
-                f"message_text) VALUES ({message.chat.id}, "
-                f"{message.message_id}, "
-                f"'{user_profile_name}', '{message.text}')")
+    cur.execute(
+        "INSERT INTO messages(chat_id, message_id, username, message_text) "
+        "VALUES (?, ?, ?, ?)",
+        (message.chat.id, message.message_id, user_profile_name, message.text)
+    )
     connect.commit()
     return
 
@@ -56,9 +57,11 @@ async def bot_historian(message: types.Message) -> None:
     if message.from_user.is_bot:
         user_profile_name = 'Bot'
 
-    cur.execute(f"INSERT INTO bot_messages(chat_id, username, message_text) "
-                f"VALUES ({message.chat.id}, "
-                f"'{user_profile_name}', '{message.text}')")
+    cur.execute(
+        "INSERT INTO bot_messages(chat_id, username, message_text) "
+        "VALUES (?, ?, ?)",
+        (message.chat.id, user_profile_name, message.text)
+    )
     connect.commit()
     return
 

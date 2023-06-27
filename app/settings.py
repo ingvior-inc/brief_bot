@@ -43,7 +43,7 @@ connect = sqlite3.connect(database_path)
 cur = connect.cursor()
 
 # Лимит на количество сообщений с одного чата для анализа / записи в БД
-MESSAGES_LIMIT = 200
+MESSAGES_LIMIT = 250
 
 # Лимит на количество сообщений в памяти бота
-BOT_MESSAGES_LIMIT = 4
+BOT_MESSAGES_LIMIT = 6

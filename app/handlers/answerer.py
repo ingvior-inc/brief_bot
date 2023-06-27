@@ -21,7 +21,7 @@ async def answerer(message: types.Message) -> None:
         memory = (ANSWERER_BASE_DIALOGUE +
                   [{'role': 'assistant' if item[0] == 'Bot' else 'user',
                    'content': f"{item[1]}" if item[0] == 'Bot'
-                   else f"{item[0]}: {item[1]}"}
+                    else f"{item[0]}: {item[1]}"}
                    for item in cur.fetchall()])
 
         text_to_process = (f'{message.from_user.first_name} '
@@ -37,9 +37,9 @@ async def answerer(message: types.Message) -> None:
         await historian.bot_historian(bot_response)
         return
 
-    await message.reply(text='После /ask нужно что-то '
-                             'спросить или попросить. '
-                             'Например /ask Где находится солнце?')
+    await message.reply(text='После /ask нужно что-то спросить '
+                             'или попросить.\n'
+                             'Например, /ask Где находится солнце?')
     return
 
 
