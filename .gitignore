@@ -134,3 +134,5 @@ messages.db
 
 # OpenAI system context
 context.json
+
+/personality
