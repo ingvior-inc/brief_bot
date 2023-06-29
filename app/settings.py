@@ -3,23 +3,24 @@ import logging
 import os
 import sqlite3
 
+from aiogram import Bot
 from dotenv import load_dotenv
 
 load_dotenv()
 
 script_directory = os.path.dirname(os.path.abspath(__file__))
 
-# Настройки логгирования
+# Logging settings
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s | %(levelname)s | %(message)s',
                     datefmt='%d.%m.%Y, %H:%M:%S')
 
-# Токен бота Telegram
+# Telegram Bot token
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+# Bot object
+BOT = Bot(token=BOT_TOKEN)
 
-# Токен OpenAI
 OPENAI_TOKEN = os.getenv('OPENAI_TOKEN')
-# Модель OpenAI
 OPENAI_MODEL = 'gpt-3.5-turbo-16k-0613'
 
 ANALYSER_SYSTEM_CONTEXT = ('Перескажи вкратце содержание переписки между '

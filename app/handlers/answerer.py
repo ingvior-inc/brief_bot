@@ -36,8 +36,6 @@ async def answerer(message: types.Message) -> None:
                        f'({message.from_user.username}): '
                        f'{message.text}')
 
-    print(text_to_process)
-
     proccessed_text = await request_to_ai(ANSWERER_SYSTEM_CONTEXT,
                                           text_to_process,
                                           memory)

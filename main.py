@@ -1,10 +1,10 @@
 import logging
 
 import openai
-from aiogram import Bot, Dispatcher, executor
+from aiogram import Dispatcher, executor
 
 from app import handlers
-from app.settings import BOT_TOKEN, OPENAI_TOKEN
+from app.settings import BOT, OPENAI_TOKEN
 from app.commands import set_commands
 
 
@@ -21,13 +21,12 @@ async def on_shutdown(dp: Dispatcher):
     await dp.storage.close()
     await dp.storage.wait_closed()
 
-    await bot.delete_webhook()
+    await BOT.delete_webhook()
     logging.warning('Webhook down')
 
 
 if __name__ == '__main__':
-    bot = Bot(token=BOT_TOKEN)
-    dp = Dispatcher(bot)
+    dp = Dispatcher(BOT)
     openai.api_key = OPENAI_TOKEN
     try:
         executor.start_polling(dp, on_startup=on_startup,
